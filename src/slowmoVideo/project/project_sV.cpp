@@ -49,11 +49,11 @@ Project_sV::Project_sV() :
     m_projDir(QDir::temp())
 {
     init();
-    
+
     int tid;
     for(tid=0;tid<4;tid++) {
     	worker[tid]=0;
-    	thread[tid]=0;    
+    	thread[tid]=0;
     }
 }
 
@@ -102,7 +102,7 @@ void Project_sV::init()
     int tid;
     for(tid=0;tid<4;tid++) {
     	worker[tid]=0;
-    	thread[tid]=0;    
+    	thread[tid]=0;
     }
 }
 
@@ -113,14 +113,14 @@ Project_sV::~Project_sV()
     	if (worker[tid]!=0) {
             worker[tid]->abort();
             thread[tid]->wait();
-            
+
             //qDebug()<<"Deleting thread and worker in Thread "<<this->QObject::thread()->currentThreadId();
-            
+
             delete worker[tid];
             delete thread[tid];
     	}
     }
-    
+
     delete m_renderTask;
     delete m_preferences;
     delete m_frameSource;
@@ -148,7 +148,7 @@ void Project_sV::reloadFlowSource()
         ocv = dynamic_cast<FlowSourceOpenCV_sV*>(m_flowSource);
         if ("OCL" == method) {
         	qDebug() << "using OCL for OpenCV";
-        	
+
         	if (ocv != NULL) {
         		int dev = m_settings.value("preferences/oclDriver", 0).toInt();
         		//qDebug() << "using OCL device : " << dev << "for rendering";
@@ -156,12 +156,13 @@ void Project_sV::reloadFlowSource()
         	}
         } else {
             int algo = m_settings.value("preferences/oclAlgo", 0).toInt();
+            algo = 0;
             ocv->chooseAlgo(algo);
         }
         qDebug() << "initial OpenCV setup";
-        ocv->setupOpticalFlow(3,15,1.2,0.5,5);
+        //ocv->setupOpticalFlow(3,15,1.2,0.5,5);
     }
-    
+
 }
 
 void Project_sV::setProjectDir(QString projectDir)
@@ -462,22 +463,22 @@ void Project_sV::startFlow(int threadid,const FrameSize frameSize,int direction)
 {
     thread[threadid] = new QThread();
     worker[threadid] = new WorkerFlow();
-    
+
     // set on what to work ...
     worker[threadid]->setFrameSize(frameSize);
     worker[threadid]->setProject(this);
     worker[threadid]->setDirection(direction);
     worker[threadid]->setFlowSource(flowSource());
-    
+
     worker[threadid]->moveToThread(thread[threadid]);
     //connect(worker, SIGNAL(valueChanged(QString)), ui->label, SLOT(setText(QString)));
     connect(worker[threadid], SIGNAL(workFlowRequested()), thread[threadid], SLOT(start()));
     connect(thread[threadid], SIGNAL(started()), worker[threadid], SLOT(doWorkFlow()));
     connect(worker[threadid], SIGNAL(finished()), thread[threadid], SLOT(quit()), Qt::DirectConnection);
-    
+
     // let's start
     thread[threadid]->wait(); // If the thread is not running, this will immediately return.
-    
+
     worker[threadid]->requestWork();
 }
 
@@ -497,7 +498,7 @@ void Project_sV::buildCacheFlowSource()
         // we should do it for each size/each way
         // use threading here
         //flowSource()->buildFlowForwardCache(FrameSize_Orig);
-        
+
         startFlow(0,FrameSize_Small,0);
         startFlow(1,FrameSize_Small,1);
         startFlow(2,FrameSize_Orig,0);
@@ -505,8 +506,7 @@ void Project_sV::buildCacheFlowSource()
 #else
         qDebug() << "cache flow source disable";
 #endif
-        
+
     }
 
 }
-

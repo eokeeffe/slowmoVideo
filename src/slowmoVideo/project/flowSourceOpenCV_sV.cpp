@@ -18,20 +18,28 @@ the Free Software Foundation, either version 3 of the License, or
 #include "opencv2/video/tracking.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
+
+#include "opencv2/core.hpp"
+#include "opencv2/core/utility.hpp"
+#include "opencv2/video.hpp"
+#include "opencv2/cudaoptflow.hpp"
+#include "opencv2/cudaarithm.hpp"
+
 // ?
 // not use #include "opencv2/gpu/gpumat.hpp"
 
-#include "opencv2/ocl/ocl.hpp" 
+//#include "opencv2/ocl/ocl.hpp"
 
 #include <QtCore/QTime>
 #include <iostream>
 #include <fstream>
 
 #include <QList>
- 
+
 using namespace cv;
-//using namespace cv::ocl; 
+//using namespace cv::ocl;
 //using namespace cv::gpu;
+using namespace cv::cuda;
 
 
 #if 1
@@ -41,21 +49,22 @@ using namespace cv;
 void check_gpu()
 {
         qDebug() << "check GPU" ;
-        int num_devices = gpu::getCudaEnabledDeviceCount();
+        int num_devices = cv::cuda::getCudaEnabledDeviceCount();
         qDebug() << "CUDA support : " << num_devices << "found";
         if (num_devices >= 1) {
                 for (int i = 0; i < num_devices; ++i) {
-                gpu::printShortCudaDeviceInfo(i);
+                cv::cuda::printShortCudaDeviceInfo(i);
 
-                gpu::DeviceInfo dev_info(i);
+                cv::cuda::DeviceInfo dev_info(i);
                 if (!dev_info.isCompatible()) {
             std::cerr << "GPU module isn't built for GPU #" << i << " ("
                  << dev_info.name() << ", CC " << dev_info.majorVersion()
                  << dev_info.minorVersion() << "\n";
         } /* if */
         } /* for */
-    } /* CUDA devices */
+        } /* CUDA devices */
 
+    /*
         qDebug() << "OpenCL support";
         ocl::PlatformsInfo platforms;
         ocl::getOpenCLPlatforms(platforms);
@@ -65,19 +74,20 @@ void check_gpu()
         }
 
         ocl::DevicesInfo devInfo;
+    */
 #if 0
-        int res = cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_ALL);
+        //int res = cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_ALL);
 #else
-        int res = cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_GPU);
+        //int res = cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_GPU);
 #endif
+        /*
         if (res != 0) {
         for(size_t i = 0 ; i < devInfo.size() ;i++) {
             std::cerr << "Device : " << i << " " << devInfo[i]->deviceName << " is present" << std::endl;
         }
-            
-
-		}
-        qDebug() << "end OpenCL support";
+        }
+        */
+        qDebug() << "end GPU support";
 }
 
 /**
@@ -87,9 +97,12 @@ void check_gpu()
  */
 int isOCLsupported()
 {
+/*
 	ocl::PlatformsInfo platforms;
-    int res = ocl::getOpenCLPlatforms(platforms);	
+    int res = ocl::getOpenCLPlatforms(platforms);
     return res;
+*/
+    return 0;
 }
 
 /**
@@ -99,18 +112,21 @@ int isOCLsupported()
  */
 QList<QString> oclFillDevices(void)
 {
+/*
 	  ocl::PlatformsInfo platforms;
       ocl::getOpenCLPlatforms(platforms);
 
       ocl::DevicesInfo devInfo;
       cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_ALL);
-      
+
       QList<QString> device_list;
-      
+
       for(size_t i = 0 ; i < devInfo.size() ;i++) {
             std::cerr << "Device : " << i << " " << devInfo[i]->deviceName << " is present" << std::endl;
             device_list.insert(i,QString::fromStdString(devInfo[i]->deviceName));
       }
+      */
+      QList<QString> device_list;
       return device_list;
 }
 
@@ -119,7 +135,7 @@ void check_gpu() {
 	qDebug() << "no OpenCL support";
 }
 
-int isOCLsupported() 
+int isOCLsupported()
 {
 	return 0;
 }
@@ -137,6 +153,7 @@ FlowSourceOpenCV_sV::FlowSourceOpenCV_sV(Project_sV *project) :
 
 void FlowSourceOpenCV_sV::initGPUDevice(int dev)
 {
+   /*
    if (dev == -1) {
 	qDebug() << "bad OCL device : " << dev << "for rendering not using it !";
 	use_gpu = 0;
@@ -145,20 +162,23 @@ void FlowSourceOpenCV_sV::initGPUDevice(int dev)
 	use_gpu = 1;
 	ocl::PlatformsInfo platforms;
     ocl::getOpenCLPlatforms(platforms);
-    
+
     ocl::DevicesInfo devInfo;
     cv::ocl::getOpenCLDevices(devInfo,ocl::CVCL_DEVICE_TYPE_ALL);
-      
+
     ocl::setDevice(devInfo[dev]);
     std::cerr << "Device : " << dev << " is " << devInfo[dev]->deviceName << std::endl;
   }
+  */
+  farn = cv::cuda::FarnebackOpticalFlow::create();
+
 }
-     
+
 void FlowSourceOpenCV_sV::chooseAlgo(int algo) {
 	qDebug() << "using Optical Flow Algo : " << algo;
     method = algo;
 }
-        		
+
 void FlowSourceOpenCV_sV::slotUpdateProjectDir()
 {
     m_dirFlowSmall.rmdir(".");
@@ -235,16 +255,29 @@ void FlowSourceOpenCV_sV::setupOpticalFlow(const int levels,const int winsize,co
                                            const double pyrScale,
                                            const int polyN)
 {
+    /*
     farn.pyrScale = pyrScale;
     farn.polyN = polyN;
     farn.polySigma = polySigma;
     farn.flags = 0;
-    
+
     farn.numLevels = levels;
     farn.winSize = winsize;
-    
+
     //const int iterations = 8; // 10
     farn.numIters = 8;
+    */
+
+    farn->setPyrScale(pyrScale);
+    farn->setPolyN(polyN);
+    farn->setPolySigma(polySigma);
+    farn->setFlags(0);
+
+    farn->setNumLevels(levels);
+    farn->setWinSize(winsize);
+
+    //const int iterations = 8; // 10
+    farn->setNumIters(8);
 }
 
 void FlowSourceOpenCV_sV::setupTVL(double thau,double lambda, double pyrScale, double warp)
@@ -255,55 +288,62 @@ void FlowSourceOpenCV_sV::setupTVL(double thau,double lambda, double pyrScale, d
 FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, FrameSize frameSize) throw(FlowBuildingError)
 {
     QString flowFileName(flowPath(leftFrame, rightFrame, frameSize));
-    
+
     /// \todo Check if size is equal
     if (!QFile(flowFileName).exists()) {
-        
+
         QTime time;
         time.start();
-        
+
         Mat prevgray, gray;
         Mat_<Point2f> flow;
         QString prevpath = project()->frameSource()->framePath(leftFrame, frameSize);
         QString path = project()->frameSource()->framePath(rightFrame, frameSize);
         //        namedWindow("flow", 1);
-        
+
 		qDebug() << "Building flow for left frame " << leftFrame << " to right frame " << rightFrame << "; Size: " << frameSize;
-		
+
         // any previous flow file ?
         QString prevflowFileName(flowPath(leftFrame-1, rightFrame-1, frameSize));
         if (!QFile(prevflowFileName).exists()) {
             qDebug() << "will try to use " << prevflowFileName << " as initial flow";
             // load flow file ,
         }
-        
+
         prevgray = imread(prevpath.toStdString(), 0);
         gray = imread(path.toStdString(), 0);
-        
+
         //cvtColor(l1, prevgray, CV_BGR2GRAY);
         //cvtColor(l2, gray, CV_BGR2GRAY);
-        
-        
+
+
         {
             //const int iterations = 8; // 10
             //done outside setupOpticalFlow(3,15,1.2,0.5,5);
-            
+
             if( prevgray.data ) {
-                
+                use_gpu=1;
                 if (use_gpu) {
         			qDebug() << "using GPU OCL version";
-        			
+
+                    /*
         			cv::ocl::oclMat d_flowx, d_flowy;
     				farn(ocl::oclMat(prevgray), ocl::oclMat(gray), d_flowx, d_flowy);
-                    
+
     				cv::Mat flowxy[] = {cv::Mat(d_flowx), cv::Mat(d_flowy)};
     				cv::merge(flowxy, 2, flow);
-    				
+    				*/
+                    GpuMat d_frameL(prevgray), d_frameR(gray), d_flow;
+                    //cv::Ptr<cv::cuda::FarnebackOpticalFlow> d_calc = cv::cuda::FarnebackOpticalFlow::create();
+
+                    farn->calc(d_frameL, d_frameR, d_flow);
+                    d_flow.download(flow);
+
         		} else {
                     if (method) { // DualTVL1
                         qDebug() << "calcOpticalFlowDual_TVL1";
                         // TODO: put this as instance variable
-                        Ptr<DenseOpticalFlow> tvl1 = createOptFlow_DualTVL1();
+                        //Ptr<DenseOpticalFlow> tvl1 = createOptFlow_DualTVL1();
                         //setupTVL(0.25,0.15, 5, 10);
                         // default are 0.25 0.15 5 5
                         //tlv1_->set("tau", tau_);
@@ -311,7 +351,7 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
                         //alg_->set("lambda", lambda_);
                         //alg_->set("nscales", nscales_);
                         //alg_->set("warps", warps_);
-                        tvl1->calc(prevgray, gray, flow);
+                        //tvl1->calc(prevgray, gray, flow);
 
                     } else { // _FARN_
                         qDebug() << "calcOpticalFlowFarneback";
@@ -320,16 +360,16 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
                                                  prevgray, gray,
                                                  //gray, prevgray,  // TBD this seems to match V3D output better but a sign flip could also do that
                                                  flow,
-                                                 farn.pyrScale, //0.5,
-                                                 farn.numLevels, //3,
-                                                 farn.winSize, //15,
-                                                 farn.numIters, //3,
-                                                 farn.polyN, //5,
-                                                 farn.polySigma, //1.2,
-                                                 farn.flags //0
+                                                 farn->getPyrScale(), //0.5,
+                                                 farn->getNumLevels(), //3,
+                                                 farn->getWinSize(), //15,
+                                                 farn->getNumIters(), //3,
+                                                 farn->getPolyN(), //5,
+                                                 farn->getPolySigma(), //1.2,
+                                                 farn->getFlags() //0
                                                  );
                     }
-                    
+
                 }
                 drawOptFlowMap(flow, flowFileName.toStdString());
             } else {
@@ -337,13 +377,13 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
                 throw FlowBuildingError(QString("imread: Could not read image " + prevpath));
             }
         }
-        
+
         qDebug() << "Optical flow built for " << flowFileName << " in " << time.elapsed() << " ms.";
-        
+
     } else {
         qDebug().nospace() << "Re-using existing flow image for left frame " << leftFrame << " to right frame " << rightFrame << ": " << flowFileName;
     }
-    
+
     try {
     	return FlowRW_sV::load(flowFileName.toStdString());
     } catch (FlowRW_sV::FlowRWError &err) {
@@ -361,42 +401,42 @@ void FlowSourceOpenCV_sV::buildFlowForwardCache(FrameSize frameSize) throw(FlowB
 	int lastFrame = project()->frameSource()->framesCount();
 	int frame = 0;
 	Mat prevgray, gray, flow;
-	
+
 	qDebug() << "Pre Building forward flow for Size: " << frameSize;
-	
+
     // load first frame
     QString prevpath = project()->frameSource()->framePath(frame, frameSize);
     prevgray = imread(prevpath.toStdString(), 0);
-    
+
     // TODO: need sliders for all these parameters
     const int levels = 3; // 5
     const int winsize = 15; // 13
     const int iterations = 8; // 10
-    
+
     const double polySigma = 1.2;
     const double pyrScale = 0.5;
     const int polyN = 5;
     const int flags = 0;
-    
+
 	for(frame=0;frame<lastFrame;frame++) {
         QString flowFileName(flowPath(frame, frame+1, frameSize));
-        
+
 		qDebug() << "Building flow for left frame " << frame << " to right frame " << frame+1 << "; Size: " << frameSize;
         /// \todo Check if size is equal
         if (!QFile(flowFileName).exists()) {
-            
+
             //QTime time;
             //time.start();
-            
+
             QString prevpath = project()->frameSource()->framePath(frame, frameSize);
             QString path = project()->frameSource()->framePath(frame+1, frameSize);
-            
+
             gray = imread(path.toStdString(), 0);
-            
+
             // use previous flow info
             //if (frame!=0)
             //    flags |= OPTFLOW_USE_INITIAL_FLOW;
-            
+
             calcOpticalFlowFarneback(
                                      prevgray, gray,
                                      flow,
@@ -412,12 +452,12 @@ void FlowSourceOpenCV_sV::buildFlowForwardCache(FrameSize frameSize) throw(FlowB
             drawOptFlowMap(flow, flowFileName.toStdString());
             std::swap(prevgray, gray);
             qDebug() << "Optical flow built for " << flowFileName;
-            
+
         } else {
             qDebug().nospace() << "Re-using existing flow image for left frame " << frame << " to right frame " << frame+1 << ": " << flowFileName;
         }
         //qDebug() << "Optical flow built for " << flowFileName << " in " << time.elapsed() << " ms.";
-        
+
 	}
-	
+
 }
