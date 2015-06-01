@@ -1,9 +1,0 @@
-/usr/local/bin/slowmoInterpolate
-/usr/local/bin/slowmoVideoInfo
-/usr/local/share/icons/AppIcon.png
-/usr/local/share/applications/slowmoUI.desktop
-/usr/local/bin/slowmoUI
-/usr/local/bin/slowmoFlowEdit
-/usr/local/bin/slowmoRenderer
-/usr/local/bin/slowmoVisualizeFlow
-/usr/local/bin/slowmoFlowBuilder

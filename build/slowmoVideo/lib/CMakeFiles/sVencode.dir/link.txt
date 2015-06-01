@@ -1,2 +1,0 @@
-/usr/bin/ar cr libsVencode.a  CMakeFiles/sVencode.dir/ffmpeg_writer.cpp.o CMakeFiles/sVencode.dir/video_enc.cpp.o CMakeFiles/sVencode.dir/moc_ffmpeg_writer.cpp.o
-/usr/bin/ranlib libsVencode.a

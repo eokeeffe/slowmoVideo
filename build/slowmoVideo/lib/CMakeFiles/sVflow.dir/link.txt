@@ -1,2 +1,0 @@
-/usr/bin/ar cr libsVflow.a  CMakeFiles/sVflow.dir/flowRW_sV.cpp.o CMakeFiles/sVflow.dir/flowField_sV.cpp.o CMakeFiles/sVflow.dir/flowTools_sV.cpp.o CMakeFiles/sVflow.dir/kernel_sV.cpp.o
-/usr/bin/ranlib libsVflow.a

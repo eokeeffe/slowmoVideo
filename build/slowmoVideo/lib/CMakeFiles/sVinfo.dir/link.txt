@@ -1,2 +1,0 @@
-/usr/bin/ar cr libsVinfo.a  CMakeFiles/sVinfo.dir/videoInfo_sV.cpp.o CMakeFiles/sVinfo.dir/avconvInfo_sV.cpp.o
-/usr/bin/ranlib libsVinfo.a

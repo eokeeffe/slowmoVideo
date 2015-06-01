@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wall -g -g    CMakeFiles/slowmoInterpolate.dir/main.cpp.o  -o slowmoInterpolate  -L/usr/local/cuda/lib64 -rdynamic ../lib/libsV.a ../lib/libsVflow.a /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.2.1 /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.2.1 -Wl,-rpath,/usr/local/cuda/lib64: 
