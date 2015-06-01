@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Comment=Slow Motion Video
+Exec=/usr/local/bin/slowmoUI
+GenericName=slowmoVideo
+Icon=/usr/local/share/icons/AppIcon.png
+MimeType=
+Name=slowmoUI
+Terminal=false
+Categories=Qt;AudioVideo;Video;

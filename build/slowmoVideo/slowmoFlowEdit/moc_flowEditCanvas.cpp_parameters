@@ -1,0 +1,6 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-I/home/evan/slowmoVideo/src
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/slowmoFlowEdit/moc_flowEditCanvas.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/slowmoFlowEdit/flowEditCanvas.h

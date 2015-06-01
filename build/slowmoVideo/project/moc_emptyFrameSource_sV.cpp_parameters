@@ -1,0 +1,5 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/project/moc_emptyFrameSource_sV.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/project/emptyFrameSource_sV.h

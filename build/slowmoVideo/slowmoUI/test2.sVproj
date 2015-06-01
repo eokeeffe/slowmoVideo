@@ -1,0 +1,235 @@
+<sVproject version_minor="7" version="2">
+    <info>
+        <appName>slowmoVideo</appName>
+        <version micro="1" major="0" minor="3"/>
+    </info>
+    <preferences>
+        <renderSectionMode mode="full">
+            <renderStartTag label=""/>
+            <renderEndTag label=""/>
+            <renderStartTime time=""/>
+            <renderEndTime time=""/>
+        </renderSectionMode>
+        <renderFrameSize size="1"/>
+        <renderInterpolationType type="11"/>
+        <renderMotionblurType type="10"/>
+        <renderFPS fps="24/1"/>
+        <renderSlowmoSamples number="16"/>
+        <renderMaxSamples number="64"/>
+        <renderTarget target=""/>
+        <imagesOutputDir dir="/home/evan"/>
+        <imagesFilenamePattern pattern="rendered-%1.jpg"/>
+        <videoFilename file=""/>
+        <videoCodec codec=""/>
+        <flowV3dLambda lambda="20"/>
+        <prevTagAxis axis="1"/>
+        <viewport_t0 x="0" y="0"/>
+        <viewport_secRes x="50" y="50"/>
+        <canvas_xAxisFPS fps="24/1"/>
+    </preferences>
+    <resources>
+        <projectDir>/home/evan/slowmoVideo/build/slowmoVideo/slowmoUI</projectDir>
+        <frameSource type="videoFile">
+            <inputFile>/home/evan/Downloads/IMG_2127.MOV</inputFile>
+        </frameSource>
+    </resources>
+    <shutterFunctions/>
+    <nodes>
+        <node>
+            <x>0.02</x>
+            <y>0.04</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>0.1</x>
+            <y>6.02</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>0.46</x>
+            <y>6.02</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>1.02</x>
+            <y>6.02</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>1.46</x>
+            <y>5.7</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>2.08</x>
+            <y>5.04</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>2.9</x>
+            <y>4.68</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>3.84</x>
+            <y>4.54</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>4.62</x>
+            <y>3.88</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>5.62</x>
+            <y>3.28</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>6.24</x>
+            <y>2.6</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>6.7</x>
+            <y>1.9</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+        <node>
+            <x>7.12</x>
+            <y>1.44</y>
+            <selected>0</selected>
+            <leftHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </leftHandle>
+            <rightHandle>
+                <x>0</x>
+                <y>0</y>
+                <type>1</type>
+            </rightHandle>
+        </node>
+    </nodes>
+    <tags/>
+</sVproject>

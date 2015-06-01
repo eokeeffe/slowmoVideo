@@ -1,0 +1,5 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/libgui/moc_combinedShortcuts.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/libgui/combinedShortcuts.h

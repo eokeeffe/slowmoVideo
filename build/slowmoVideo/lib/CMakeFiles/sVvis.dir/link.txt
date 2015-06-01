@@ -1,0 +1,2 @@
+/usr/bin/ar cr libsVvis.a  CMakeFiles/sVvis.dir/flowVisualization_sV.cpp.o
+/usr/bin/ranlib libsVvis.a

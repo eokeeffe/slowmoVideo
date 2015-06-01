@@ -1,0 +1,9 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-I/home/evan/slowmoVideo/src
+-I/home/evan/slowmoVideo/src/slowmoVideo/slowmoUI/dialogues
+-I/home/evan/slowmoVideo/src/slowmoVideo/slowmoUI/.
+-I/home/evan/slowmoVideo/src/slowmoVideo/slowmoUI/..
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/slowmoUI/dialogues/moc_shutterFunctionDialog.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/slowmoUI/dialogues/shutterFunctionDialog.h

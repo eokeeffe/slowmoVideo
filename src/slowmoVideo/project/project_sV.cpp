@@ -156,7 +156,7 @@ void Project_sV::reloadFlowSource()
         	}
         } else {
             int algo = m_settings.value("preferences/oclAlgo", 0).toInt();
-            algo = 0;
+            //algo = 0;
             ocv->chooseAlgo(algo);
         }
         qDebug() << "initial OpenCV setup";

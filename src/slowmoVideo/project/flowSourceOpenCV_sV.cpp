@@ -25,6 +25,10 @@ the Free Software Foundation, either version 3 of the License, or
 #include "opencv2/cudaoptflow.hpp"
 #include "opencv2/cudaarithm.hpp"
 
+#include "opencv2/imgcodecs.hpp"
+
+#include "opencv2/core/ocl.hpp"
+
 // ?
 // not use #include "opencv2/gpu/gpumat.hpp"
 
@@ -40,6 +44,7 @@ using namespace cv;
 //using namespace cv::ocl;
 //using namespace cv::gpu;
 using namespace cv::cuda;
+
 
 
 #if 1
@@ -170,8 +175,7 @@ void FlowSourceOpenCV_sV::initGPUDevice(int dev)
     std::cerr << "Device : " << dev << " is " << devInfo[dev]->deviceName << std::endl;
   }
   */
-  farn = cv::cuda::FarnebackOpticalFlow::create();
-
+  cv::ocl::setUseOpenCL(true);
 }
 
 void FlowSourceOpenCV_sV::chooseAlgo(int algo) {
@@ -310,8 +314,8 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
             // load flow file ,
         }
 
-        prevgray = imread(prevpath.toStdString(), 0);
-        gray = imread(path.toStdString(), 0);
+        prevgray = imread(prevpath.toStdString(), IMREAD_GRAYSCALE);
+        gray = imread(path.toStdString(), IMREAD_GRAYSCALE);
 
         //cvtColor(l1, prevgray, CV_BGR2GRAY);
         //cvtColor(l2, gray, CV_BGR2GRAY);
@@ -322,7 +326,7 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
             //done outside setupOpticalFlow(3,15,1.2,0.5,5);
 
             if( prevgray.data ) {
-                use_gpu=1;
+
                 if (use_gpu) {
         			qDebug() << "using GPU OCL version";
 
@@ -334,16 +338,19 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
     				cv::merge(flowxy, 2, flow);
     				*/
                     GpuMat d_frameL(prevgray), d_frameR(gray), d_flow;
-                    //cv::Ptr<cv::cuda::FarnebackOpticalFlow> d_calc = cv::cuda::FarnebackOpticalFlow::create();
+                    farn = cv::cuda::FarnebackOpticalFlow::create();
 
+                    std::cout<<"Before Farn"<<std::endl;
                     farn->calc(d_frameL, d_frameR, d_flow);
+                    std::cout<<"After Farn"<<std::endl;
                     d_flow.download(flow);
+                    std::cout<<"Downloaded"<<std::endl;
 
         		} else {
                     if (method) { // DualTVL1
                         qDebug() << "calcOpticalFlowDual_TVL1";
                         // TODO: put this as instance variable
-                        //Ptr<DenseOpticalFlow> tvl1 = createOptFlow_DualTVL1();
+                        //Ptr<OpticalFlow> tvl1 = createOptFlow_DualTVL1();
                         //setupTVL(0.25,0.15, 5, 10);
                         // default are 0.25 0.15 5 5
                         //tlv1_->set("tau", tau_);
@@ -353,22 +360,33 @@ FlowField_sV* FlowSourceOpenCV_sV::buildFlow(uint leftFrame, uint rightFrame, Fr
                         //alg_->set("warps", warps_);
                         //tvl1->calc(prevgray, gray, flow);
 
+                        ocl::setUseOpenCL(true);
+
+                        UMat pg,g,f;
+                        prevgray.copyTo(pg);
+                        gray.copyTo(g);
+                        cv::Ptr<cv::DenseOpticalFlow> tvl1 = cv::createOptFlow_DualTVL1();
+                        tvl1->calc(pg,g,f);
+                        f.copyTo(flow);
+
                     } else { // _FARN_
                         qDebug() << "calcOpticalFlowFarneback";
                         // TODO: check to use prev flow as initial flow ? (flags)
+
                         calcOpticalFlowFarneback(
                                                  prevgray, gray,
                                                  //gray, prevgray,  // TBD this seems to match V3D output better but a sign flip could also do that
                                                  flow,
-                                                 farn->getPyrScale(), //0.5,
-                                                 farn->getNumLevels(), //3,
-                                                 farn->getWinSize(), //15,
-                                                 farn->getNumIters(), //3,
-                                                 farn->getPolyN(), //5,
-                                                 farn->getPolySigma(), //1.2,
-                                                 farn->getFlags() //0
+                                                 0.5,//farn->getPyrScale(), //0.5,
+                                                 3,//farn->getNumLevels(), //3,
+                                                 15,//farn->getWinSize(), //15,
+                                                 3,//farn->getNumIters(), //3,
+                                                 5,//farn->getPolyN(), //5,
+                                                 1.2,//farn->getPolySigma(), //1.2,
+                                                 0//farn->getFlags() //0
                                                  );
                     }
+
 
                 }
                 drawOptFlowMap(flow, flowFileName.toStdString());

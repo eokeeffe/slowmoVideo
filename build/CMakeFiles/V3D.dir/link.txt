@@ -1,0 +1,2 @@
+/usr/bin/ar cr libV3D.a  CMakeFiles/V3D.dir/V3D/GL/glsl_shaders.cpp.o CMakeFiles/V3D.dir/V3D/GL/v3d_gpubase.cpp.o CMakeFiles/V3D.dir/V3D/GL/v3d_gpuflow.cpp.o CMakeFiles/V3D.dir/V3D/GL/v3d_gpucolorflow.cpp.o CMakeFiles/V3D.dir/V3D/GL/v3d_gpupyramid.cpp.o CMakeFiles/V3D.dir/V3D/Base/v3d_image.cpp.o
+/usr/bin/ranlib libV3D.a

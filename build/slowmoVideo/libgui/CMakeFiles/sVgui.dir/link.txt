@@ -1,0 +1,2 @@
+/usr/bin/ar cr libsVgui.a  CMakeFiles/sVgui.dir/imageDisplay.cpp.o CMakeFiles/sVgui.dir/combinedShortcuts.cpp.o CMakeFiles/sVgui.dir/moc_imageDisplay.cpp.o CMakeFiles/sVgui.dir/moc_combinedShortcuts.cpp.o
+/usr/bin/ranlib libsVgui.a

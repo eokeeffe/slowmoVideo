@@ -1,0 +1,5 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/libgui/moc_imageDisplay.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/libgui/imageDisplay.h

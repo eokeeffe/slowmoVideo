@@ -1,0 +1,5 @@
+-I/home/evan/slowmoVideo/build
+-I/home/evan/slowmoVideo/src/slowmoVideo/tr
+-o
+/home/evan/slowmoVideo/build/slowmoVideo/lib/moc_ffmpeg_writer.cpp
+/home/evan/slowmoVideo/src/slowmoVideo/lib/ffmpeg_writer.h
