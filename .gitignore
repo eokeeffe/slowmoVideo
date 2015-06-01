@@ -9,7 +9,7 @@ flowScripts/*.avi
 flowScripts/*.pyc
 
 clips
-*/build
+*/build/*
 
 slowmoVideo/docs/html
 slowmoVideo/docs/latex
